@@ -1,6 +1,6 @@
 schema: osera-patch-evidence/0.1.0
 producer: moderne
-release: 4.12.35-backpatch-00002
+release: 4.12.35-backpatch-00003
 baseline: v4.12.34+backpatch.baseline
 fixes:
   - cve: CVE-2026-84363
@@ -18,12 +18,20 @@ fixes:
     basis: backport
     artifacts:
       - hono
-    note: "New in this release; upstream's fix in 4.13.5. It closes the advisory: Hono: Unbounded dot-notation nesting in `parseBody()` can cause memory exhaustion."
+    note: "Carried from 4.12.35-backpatch-00002; upstream's fix in 4.13.5. It closes the advisory: Hono: Unbounded dot-notation nesting in `parseBody()` can cause memory exhaustion."
+  - cve: CVE-2026-84365
+    upstream_fix_url: https://github.com/honojs/hono/commit/3a67f7f3997e1437d108f7bcba2dbcee2df69221
+    advisory_url: https://nvd.nist.gov/vuln/detail/CVE-2026-84365
+    patch_commit_url: https://github.com/moderne-backpatch-alliance/backpatch-hono/commit/4454f59
+    basis: backport
+    artifacts:
+      - hono
+    note: "New in this release; upstream's fix in 4.13.5. It closes the advisory: Hono: Incomplete fix for CVE-2026-39408: `toSSG()` still writes files outside the output directory."
 tests:
-  commit: 8e8745f93c90d8e7ba335e77efbfb159078205af
+  commit: 4454f5969ce47e9b8e24ceb73f8501bc4bc93b28
   command: bun 1.2.19 install --frozen-lockfile --ignore-scripts at the tag, bun run build, npm pack --ignore-scripts, then vitest run with the repo's vitest.config.ts limited to its src projects and coverage off, at the tested commit, with the JUnit reporter
   runtime: Node.js v22.23.2, bun 1.2.19, npm 10.9.8, vitest 4.1.9, macOS 27.2 arm64
-  report: hono-4.12.35-backpatch-00002-tests.zip
-  report_sha256: a0c7f4f621da88417eecdf76603e25c9e09cc00bcbba31736f2aa32598591b3a
+  report: hono-4.12.35-backpatch-00003-tests.zip
+  report_sha256: a72479acc7e8b8acdce5b047236be479fe62779fa773224d2848c605b2b68aff
   result: pass
-  note: "upstream's vitest suite (the repo's vitest.config.ts, its src projects main, jsx-runtime-default and jsx-runtime-dom, coverage off) on the tested commit's source at the tested commit: 4615 tests, 4581 passed, 0 failed, 34 skipped. The CVE tests (src/utils/body.test.ts), with this release's production lines reverted at the tested commit: 43 tests, 40 passed, 3 failed, 0 skipped; with them: 43 tests, 43 passed, 0 failed, 0 skipped. Built with bun run build (esbuild and tsc) in a directory named hono, 556 of npmjs's 562 files for 4.12.34 are identical; the rest are dist/cjs/utils/body.js, dist/cjs/utils/url.js, dist/types/utils/url.d.ts, dist/utils/body.js, dist/utils/url.js, package.json. The archive's file-origins.yaml maps each packaged file to the commit, or names its inputs and build."
+  note: "upstream's vitest suite (the repo's vitest.config.ts, its src projects main, jsx-runtime-default and jsx-runtime-dom, coverage off) on the tested commit's source at the tested commit: 4625 tests, 4591 passed, 0 failed, 34 skipped. The CVE tests (src/helper/ssg/ssg.test.tsx src/helper/ssg/utils.test.ts), with this release's production lines reverted at the tested commit: 60 tests, 50 passed, 10 failed, 0 skipped; with them: 60 tests, 60 passed, 0 failed, 0 skipped. Built with bun run build (esbuild and tsc) in a directory named hono, 552 of npmjs's 562 files for 4.12.34 are identical; the rest are dist/cjs/helper/ssg/ssg.js, dist/cjs/helper/ssg/utils.js, dist/cjs/utils/body.js, dist/cjs/utils/url.js, dist/helper/ssg/ssg.js, dist/helper/ssg/utils.js, dist/types/utils/url.d.ts, dist/utils/body.js, dist/utils/url.js, package.json. The archive's file-origins.yaml maps each packaged file to the commit, or names its inputs and build."
