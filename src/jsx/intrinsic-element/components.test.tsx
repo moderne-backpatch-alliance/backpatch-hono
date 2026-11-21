@@ -1,5 +1,6 @@
 /** @jsxImportSource ../ */
 import { useActionState } from '../'
+import { HtmlEscapedCallbackPhase, resolveCallback } from '../../utils/html'
 
 describe('intrinsic element', () => {
   describe('document metadata', () => {
@@ -16,6 +17,31 @@ describe('intrinsic element', () => {
         )
         expect(template.toString()).toBe(
           '<html><head><title>Hello</title></head><body><h1>World</h1></body></html>'
+        )
+      })
+
+      it('should render a title with itemProp and async children', async () => {
+        const AsyncChild = async () => <>{'price < 100'}</>
+        const template = <title itemProp='name'>{<AsyncChild />}</title>
+
+        expect(String(await template.toString())).toBe(
+          '<title itemprop="name">price &lt; 100</title>'
+        )
+      })
+
+      it('should not interpret replacement patterns in a hoisted title', async () => {
+        const template = (
+          <html>
+            <head></head>
+            <body>
+              <title>{'price $< 100'}</title>
+            </body>
+          </html>
+        )
+        const rendered = await template.toString()
+
+        expect(await resolveCallback(rendered, HtmlEscapedCallbackPhase.Stringify, false, {})).toBe(
+          '<html><head><title>price $&lt; 100</title></head><body></body></html>'
         )
       })
     })
