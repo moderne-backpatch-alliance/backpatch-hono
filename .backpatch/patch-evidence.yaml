@@ -1,6 +1,6 @@
 schema: osera-patch-evidence/0.1.0
 producer: moderne
-release: 4.12.35-backpatch-00006
+release: 4.12.35-backpatch-00007
 baseline: v4.12.34+backpatch.baseline
 fixes:
   - cve: CVE-2026-84363
@@ -50,12 +50,20 @@ fixes:
     basis: backport
     artifacts:
       - hono
-    note: "New in this release; upstream's fix in 4.13.16. It closes the advisory: Hono: `validator('form')` skips validation for `multipart/form-data` requests with extra parameters."
+    note: "Carried from 4.12.35-backpatch-00006; upstream's fix in 4.13.16. It closes the advisory: Hono: `validator('form')` skips validation for `multipart/form-data` requests with extra parameters."
+  - cve: CVE-2026-126359
+    upstream_fix_url: https://github.com/honojs/hono/commit/15bbd96ad1b62a0b189db4fd8dc7bf8ef280c513
+    advisory_url: https://nvd.nist.gov/vuln/detail/CVE-2026-126359
+    patch_commit_url: https://github.com/moderne-backpatch-alliance/backpatch-hono/commit/7af8368
+    basis: backport
+    artifacts:
+      - hono
+    note: "New in this release; upstream's fix in 4.13.16. It closes the advisory: Hono: `css` helper does not escape a closing tag split between the template and an interpolated value, allowing HTML injection."
 tests:
-  commit: b31b7402bb3d5f14bace129fe74ea837bee85c9f
+  commit: 7af8368fcf8ae6b9a8318dbc5281a7b083910614
   command: bun 1.2.19 install --frozen-lockfile --ignore-scripts at the tag, bun run build, npm pack --ignore-scripts, then vitest run with the repo's vitest.config.ts limited to its src projects and coverage off, at the tested commit, with the JUnit reporter
   runtime: Node.js v22.23.2, bun 1.2.19, npm 10.9.8, vitest 4.1.9, macOS 27.2 arm64
-  report: hono-4.12.35-backpatch-00006-tests.zip
-  report_sha256: be51e2e4bf760fbd099119167bd333420617d3e206ea9921529d2bced4189dc7
+  report: hono-4.12.35-backpatch-00007-tests.zip
+  report_sha256: c5236cbe1791bf42aac55de30fc01907bec62a8e90fc551df5ca09c7e6e5146e
   result: pass
-  note: "upstream's vitest suite (the repo's vitest.config.ts, its src projects main, jsx-runtime-default and jsx-runtime-dom, coverage off) on the tested commit's source at the tested commit: 4693 tests, 4659 passed, 0 failed, 34 skipped. The CVE tests (src/validator/validator.test.ts), with this release's production lines reverted at the tested commit: 57 tests, 56 passed, 1 failed, 0 skipped; with them: 57 tests, 57 passed, 0 failed, 0 skipped. Built with bun run build (esbuild and tsc) in a directory named hono, 535 of npmjs's 562 files for 4.12.34 are identical; the rest are dist/cjs/helper/ssg/ssg.js, dist/cjs/helper/ssg/utils.js, dist/cjs/jsx/base.js, dist/cjs/jsx/components.js, dist/cjs/jsx/context.js, dist/cjs/jsx/dom/server.js, dist/cjs/jsx/intrinsic-element/components.js, dist/cjs/jsx/streaming.js, dist/cjs/middleware/csrf/index.js, dist/cjs/utils/body.js, dist/cjs/utils/url.js, dist/cjs/validator/validator.js, dist/helper/ssg/ssg.js, dist/helper/ssg/utils.js, dist/jsx/base.js, dist/jsx/components.js, dist/jsx/context.js, dist/jsx/dom/server.js, dist/jsx/intrinsic-element/components.js, dist/jsx/streaming.js, dist/middleware/csrf/index.js, dist/types/jsx/base.d.ts, dist/types/utils/url.d.ts, dist/utils/body.js, dist/utils/url.js, dist/validator/validator.js, package.json. The archive's file-origins.yaml maps each packaged file to the commit, or names its inputs and build."
+  note: "upstream's vitest suite (the repo's vitest.config.ts, its src projects main, jsx-runtime-default and jsx-runtime-dom, coverage off) on the tested commit's source at the tested commit: 4717 tests, 4683 passed, 0 failed, 34 skipped. The CVE tests (src/helper/css/index.test.tsx), with this release's production lines reverted at the tested commit: 60 tests, 54 passed, 6 failed, 0 skipped; with them: 60 tests, 60 passed, 0 failed, 0 skipped. Built with bun run build (esbuild and tsc) in a directory named hono, 533 of npmjs's 562 files for 4.12.34 are identical; the rest are dist/cjs/helper/css/common.js, dist/cjs/helper/ssg/ssg.js, dist/cjs/helper/ssg/utils.js, dist/cjs/jsx/base.js, dist/cjs/jsx/components.js, dist/cjs/jsx/context.js, dist/cjs/jsx/dom/server.js, dist/cjs/jsx/intrinsic-element/components.js, dist/cjs/jsx/streaming.js, dist/cjs/middleware/csrf/index.js, dist/cjs/utils/body.js, dist/cjs/utils/url.js, dist/cjs/validator/validator.js, dist/helper/css/common.js, dist/helper/ssg/ssg.js, dist/helper/ssg/utils.js, dist/jsx/base.js, dist/jsx/components.js, dist/jsx/context.js, dist/jsx/dom/server.js, dist/jsx/intrinsic-element/components.js, dist/jsx/streaming.js, dist/middleware/csrf/index.js, dist/types/jsx/base.d.ts, dist/types/utils/url.d.ts, dist/utils/body.js, dist/utils/url.js, dist/validator/validator.js, package.json. The archive's file-origins.yaml maps each packaged file to the commit, or names its inputs and build."
