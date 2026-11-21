@@ -1,0 +1,21 @@
+schema: osera-patch-evidence/0.1.0
+producer: moderne
+release: 4.12.35-backpatch-00001
+baseline: v4.12.34+backpatch.baseline
+fixes:
+  - cve: CVE-2026-84363
+    upstream_fix_url: https://github.com/honojs/hono/commit/9c28d724c5a7fb086ebaa812fdc1ad6e957c63bc
+    advisory_url: https://nvd.nist.gov/vuln/detail/CVE-2026-84363
+    patch_commit_url: https://github.com/moderne-backpatch-alliance/backpatch-hono/commit/6cd71c2
+    basis: adapted
+    artifacts:
+      - hono
+    note: "New in this release; upstream's fix in 4.13.5, adapted to 4.12.34. It closes the advisory: Hono: Query parser reads parameters after the URL fragment, causing cache-key and proxy interpretation differentials."
+tests:
+  commit: 6cd71c277ced82ff188421c0590249f513025754
+  command: bun 1.2.19 install --frozen-lockfile --ignore-scripts at the tag, bun run build, npm pack --ignore-scripts, then vitest run with the repo's vitest.config.ts limited to its src projects and coverage off, at the tested commit, with the JUnit reporter
+  runtime: Node.js v22.23.2, bun 1.2.19, npm 10.9.8, vitest 4.1.9, macOS 27.2 arm64
+  report: hono-4.12.35-backpatch-00001-tests.zip
+  report_sha256: 914dd2c774e6b7b38d3ffb776682d250476591254e1e91335d45e92714c8add4
+  result: pass
+  note: "upstream's vitest suite (the repo's vitest.config.ts, its src projects main, jsx-runtime-default and jsx-runtime-dom, coverage off) on the tested commit's source at the tested commit: 4611 tests, 4577 passed, 0 failed, 34 skipped. The CVE tests (src/utils/url.test.ts), with this release's production lines reverted at the tested commit: 34 tests, 31 passed, 3 failed, 0 skipped; with them: 34 tests, 34 passed, 0 failed, 0 skipped. Built with bun run build (esbuild and tsc) in a directory named hono, 558 of npmjs's 562 files for 4.12.34 are identical; the rest are dist/cjs/utils/url.js, dist/types/utils/url.d.ts, dist/utils/url.js, package.json. The archive's file-origins.yaml maps each packaged file to the commit, or names its inputs and build."
